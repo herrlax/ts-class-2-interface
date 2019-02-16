@@ -30,7 +30,7 @@ function insertInterfaces(tsinterface: string[], textEditor: vscode.TextEditor) 
 	const { document, selection } = textEditor;
 	const insertionLine = document.lineAt(selection.start.line);
 	const workspaceEdit = new vscode.WorkspaceEdit();
-	workspaceEdit.insert(document.uri, insertionLine.range.start, `${tsinterface} \n`);
+	workspaceEdit.insert(document.uri, insertionLine.range.start, `${tsinterface.join('\n')} \n`);
 	return workspaceEdit;
 }
 
