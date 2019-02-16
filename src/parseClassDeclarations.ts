@@ -6,7 +6,5 @@ export async function parseClassDeclarations(code: string) {
   const classDeclarations: Declaration[] = parsedCode.declarations
     .filter(d => d instanceof ClassDeclaration);
 
-  console.log(classDeclarations);
-
   return classDeclarations as ClassDeclaration[];
 }
