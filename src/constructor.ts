@@ -6,5 +6,5 @@ export function constructInterface(cd: ClassDeclaration) {
     return `  ${p.name}${p.isOptional ? '?' : ''}: ${p.type};`;
   }).join('\n');
 
-  return `interface I${className} {\n${classProps}\n}`;
+  return `interface I${className} {\n${classProps}\n}\n`;
 }
