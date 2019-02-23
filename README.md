@@ -1,6 +1,7 @@
-# TS Class 2 Interface
+# TS interface from class
 
-Generates an interface from selected Typescript class 🏄
+Generates an interface from a selected Typescript class 🏄
 
 ## [Unreleased]
+
 - This extension is still unreleased
