@@ -27,9 +27,9 @@ function getMethods(cd: ClassDeclaration) {
     .filter(m => { return m.visibility !== 0; })
     .map(m => {
       const params = m.parameters.map(p => {
-        return `${p.name}: ${p.type}`;
+        return `${p.name}: ${p.type || "void"}`;
       }).join(', ');
 
-      return `  ${m.name}${params.length > 0 ? `(${params})` : ''}: ${m.type};\n`;
+      return `  ${m.name}(${params.length > 0 ? `${params}` : ''}): ${m.type || "void"};\n`;
     }).join('');
 }
