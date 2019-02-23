@@ -1,4 +1,8 @@
-import { ClassDeclaration } from "typescript-parser";
+import {
+  ClassDeclaration,
+  ScopedDeclaration,
+  StaticDeclaration
+} from "typescript-parser";
 
 export interface IConstructedInterface {
   name: string;
@@ -20,19 +24,16 @@ export function constructInterface(
 
 function getProperties(cd: ClassDeclaration) {
   return cd.properties
+    .filter(publicFacingDeclaration)
     .map(p => {
-      return p.visibility !== 0 && !p.isStatic
-        ? `  ${p.name}${p.isOptional ? "?" : ""}: ${p.type};\n`
-        : "";
+      return `  ${p.name}${p.isOptional ? "?" : ""}: ${p.type};\n`;
     })
     .join("");
 }
 
 function getMethods(cd: ClassDeclaration) {
   return cd.methods
-    .filter(m => {
-      return m.visibility !== 0;
-    })
+    .filter(publicFacingDeclaration)
     .map(m => {
       const params = m.parameters
         .map(p => {
@@ -44,4 +45,8 @@ function getMethods(cd: ClassDeclaration) {
         "void"};\n`;
     })
     .join("");
+}
+
+function publicFacingDeclaration(i: ScopedDeclaration & StaticDeclaration) {
+  return i.visibility !== 0 && i.visibility !== 1 && !i.isStatic;
 }
