@@ -22,18 +22,18 @@ export function constructInterface(
   };
 }
 
-function getProperties(cd: ClassDeclaration) {
+export function getProperties(cd: ClassDeclaration): string {
   return cd.properties
-    .filter(publicFacingDeclaration)
+    .filter(isPublicFacing)
     .map(p => {
       return `  ${p.name}${p.isOptional ? "?" : ""}: ${p.type};\n`;
     })
     .join("");
 }
 
-function getMethods(cd: ClassDeclaration) {
+export function getMethods(cd: ClassDeclaration): string {
   return cd.methods
-    .filter(publicFacingDeclaration)
+    .filter(isPublicFacing)
     .map(m => {
       const params = m.parameters
         .map(p => {
@@ -47,6 +47,8 @@ function getMethods(cd: ClassDeclaration) {
     .join("");
 }
 
-function publicFacingDeclaration(i: ScopedDeclaration & StaticDeclaration) {
+export function isPublicFacing(
+  i: ScopedDeclaration & StaticDeclaration
+): boolean {
   return i.visibility !== 0 && i.visibility !== 1 && !i.isStatic;
 }

@@ -1,10 +1,11 @@
 import * as vscode from "vscode";
 import { constructInterface, IConstructedInterface } from "./constructor";
 import {
-  getClassDeclarations,
+  getDeclarations,
   getSignatureLength,
-  getSignatureSufix
+  createSignatureSuffix
 } from "./parser";
+import { ClassDeclaration } from "typescript-parser";
 
 export async function activate(context: vscode.ExtensionContext) {
   let disposable = vscode.commands.registerCommand(
@@ -18,12 +19,17 @@ export async function activate(context: vscode.ExtensionContext) {
       }
 
       const { selection, document } = textEditor;
-      const classDeclarations = await getClassDeclarations(
+      const classDeclarations = await getDeclarations(
         document.getText(selection).trim()
       );
 
       if (classDeclarations.length === 0) {
         error("Found no selected class 💁‍");
+        return;
+      }
+
+      if (!(classDeclarations[0] instanceof ClassDeclaration)) {
+        error("Please select only a class");
         return;
       }
 
@@ -34,8 +40,11 @@ export async function activate(context: vscode.ExtensionContext) {
         return;
       }
 
-      const tsinterface = constructInterface(classDeclarations[0]);
-      await insertInterfaces(tsinterface, textEditor);
+      const tsinterface = constructInterface(
+        classDeclarations[0] as ClassDeclaration
+      );
+
+      insertInterface(tsinterface, textEditor);
 
       vscode.window.showInformationMessage(
         "Successfully generated interface from selected class 🙌"
@@ -46,20 +55,26 @@ export async function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(disposable);
 }
 
-async function insertInterfaces(
+function insertInterface(
   tsinterface: IConstructedInterface,
   textEditor: vscode.TextEditor
 ) {
   const { document, selection } = textEditor;
 
-  const signatureLength = await getSignatureLength(document.getText(selection));
-  const signatureSufix = await getSignatureSufix(tsinterface.name);
+  const signatureLength = getSignatureLength(document.getText(selection));
+  const signatureSufix = createSignatureSuffix(
+    document
+      .getText(selection)
+      .trim()
+      .split("\n")[0],
+    tsinterface.name
+  );
 
   textEditor.edit(builder => {
     const selectedClass = textEditor.selection.start;
     const location = new vscode.Position(
       selectedClass.line,
-      signatureLength - 1
+      signatureLength - 2
     );
 
     builder.insert(selectedClass, `${tsinterface.value}\n`);
