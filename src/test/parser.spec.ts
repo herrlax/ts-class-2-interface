@@ -1,20 +1,11 @@
-import {
-  getSignatureLength,
-  createSignatureSuffix,
-  getDeclarations
-} from "../parser";
+import { getSignature, getDeclarations } from "../parser";
 
 describe("Parser", () => {
-  it("getSignatureLength", () => {
-    const length = getSignatureLength(`class Foo {
+  it("getSignature", () => {
+    const signature = getSignature(`class Foo {
         public bar(prop: string) {}
     }`);
-    expect(length).toEqual(11);
-  });
-
-  it("createSignatureSuffix", () => {
-    const suffix = createSignatureSuffix("", "IFoo");
-    expect(suffix.trim()).toEqual("implements IFoo");
+    expect(signature).toEqual("class Foo {");
   });
 
   it("getDeclarations", async () => {

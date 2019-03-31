@@ -52,3 +52,22 @@ export function isPublicFacing(
 ): boolean {
   return i.visibility !== 0 && i.visibility !== 1 && !i.isStatic;
 }
+
+export function createSignatureSuffix(
+  signature: string,
+  interfaceName: string
+) {
+  const whiteSpace = signature.charAt(signature.length - 2) === " " ? "" : " ";
+
+  const prefix = signature.includes("implements")
+    ? ","
+    : `${whiteSpace}implements`;
+
+  const trailingSpace =
+    signature.charAt(signature.length - 2) !== " " ||
+    !signature.includes("implements")
+      ? " "
+      : "";
+
+  return `${prefix} ${interfaceName}${trailingSpace}`;
+}

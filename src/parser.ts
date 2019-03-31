@@ -6,15 +6,20 @@ export async function getDeclarations(code: string) {
   return parsedCode.declarations;
 }
 
-export function getSignatureLength(code: string) {
-  const lines = code.split("\n");
-  return lines[0].trim().length;
+export function getInsertLocation(signature: string) {
+  const signatureLength = signature.length;
+  let stepper = 1;
+
+  if (signature.includes("implements")) {
+    stepper = signature.charAt(signatureLength - 2) === " " ? 2 : 1;
+  }
+
+  return signatureLength - stepper;
 }
 
-export function createSignatureSuffix(
-  signature: string,
-  interfaceName: string
-) {
-  const prefix = signature.includes("implements") ? "," : " implements";
-  return `${prefix} ${interfaceName} `;
+export function getSignature(code: string) {
+  return code
+    .trim()
+    .split("\n")[0]
+    .trim();
 }

@@ -1,10 +1,10 @@
 import * as vscode from "vscode";
-import { constructInterface, IConstructedInterface } from "./constructor";
 import {
-  getDeclarations,
-  getSignatureLength,
+  constructInterface,
+  IConstructedInterface,
   createSignatureSuffix
-} from "./parser";
+} from "./constructor";
+import { getDeclarations, getSignature, getInsertLocation } from "./parser";
 import { ClassDeclaration } from "typescript-parser";
 
 export async function activate(context: vscode.ExtensionContext) {
@@ -61,22 +61,13 @@ function insertInterface(
 ) {
   const { document, selection } = textEditor;
 
-  const signatureLength = getSignatureLength(document.getText(selection));
-  const signatureSufix = createSignatureSuffix(
-    document
-      .getText(selection)
-      .trim()
-      .split("\n")[0],
-    tsinterface.name
-  );
+  const signature = getSignature(document.getText(selection));
+  const signatureSufix = createSignatureSuffix(signature, tsinterface.name);
+  const selectedClass = textEditor.selection.start;
+  const insertLocation = getInsertLocation(signature);
+  const location = new vscode.Position(selectedClass.line, insertLocation);
 
   textEditor.edit(builder => {
-    const selectedClass = textEditor.selection.start;
-    const location = new vscode.Position(
-      selectedClass.line,
-      signatureLength - 2
-    );
-
     builder.insert(selectedClass, `${tsinterface.value}\n`);
     builder.insert(location, signatureSufix);
   });
