@@ -7,14 +7,8 @@ export async function getDeclarations(code: string) {
 }
 
 export function getInsertLocation(signature: string) {
-  const signatureLength = signature.length;
-  let stepper = 1;
-
-  if (signature.includes("implements")) {
-    stepper = signature.charAt(signatureLength - 2) === " " ? 2 : 1;
-  }
-
-  return signatureLength - stepper;
+  const stepper = signature.charAt(signature.length - 2) === " " ? 2 : 1;
+  return signature.length - stepper;
 }
 
 export function getSignature(code: string) {

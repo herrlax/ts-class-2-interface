@@ -57,17 +57,9 @@ export function createSignatureSuffix(
   signature: string,
   interfaceName: string
 ) {
-  const whiteSpace = signature.charAt(signature.length - 2) === " " ? "" : " ";
-
-  const prefix = signature.includes("implements")
-    ? ","
-    : `${whiteSpace}implements`;
-
+  const prefix = signature.includes("implements") ? "," : " implements";
   const trailingSpace =
-    signature.charAt(signature.length - 2) !== " " ||
-    !signature.includes("implements")
-      ? " "
-      : "";
+    signature.charAt(signature.length - 2) !== " " ? " " : "";
 
   return `${prefix} ${interfaceName}${trailingSpace}`;
 }
