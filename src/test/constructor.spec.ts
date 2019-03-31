@@ -5,7 +5,7 @@ import {
   PropertyDeclaration
 } from "typescript-parser";
 
-describe("Constructor tests", () => {
+describe("Constructor", () => {
   describe("isPublicFacing", () => {
     it("returns false when visibility is private", () => {
       const foo = {
