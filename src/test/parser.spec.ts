@@ -3,7 +3,8 @@ import {
   getDeclarations,
   isPublicFacing,
   getProperties,
-  getMethods
+  getMethods,
+  getInsertLocation
 } from "../parser";
 import {
   PropertyDeclaration,
@@ -12,13 +13,6 @@ import {
 } from "typescript-parser";
 
 describe("Parser", () => {
-  it("getSignature", () => {
-    const signature = getSignature(`class Foo {
-        public bar(prop: string) {}
-    }`);
-    expect(signature).toEqual("class Foo {");
-  });
-
   it("getDeclarations", async () => {
     const ds = await getDeclarations(`
         class Foo {
@@ -27,6 +21,67 @@ describe("Parser", () => {
         }`);
 
     expect(ds.length).toEqual(1);
+  });
+
+  describe("getInsertLocation", () => {
+    describe("when a signature is missing a white space before {", () => {
+      it("return signature length - 1", () => {
+        const insertAt = getInsertLocation("class Foo{");
+        expect(insertAt).toEqual("class Foo{".length - 1);
+      });
+    });
+
+    describe("when a signature is not missing a white space before {", () => {
+      it("return signature length - 2", () => {
+        const insertAt = getInsertLocation("class Foo {");
+        expect(insertAt).toEqual("class Foo {".length - 2);
+      });
+    });
+  });
+
+  it("getSignature", () => {
+    const signature = getSignature(`class Foo {
+        public bar(prop: string) {}
+    }`);
+    expect(signature).toEqual("class Foo {");
+  });
+
+  describe("isPublicFacing", () => {
+    it("returns false when visibility is private", () => {
+      const foo = {
+        name: "foo",
+        visibility: 1,
+        isStatic: false
+      };
+      expect(isPublicFacing(foo)).toEqual(false);
+    });
+
+    it("returns false when visibility is protected", () => {
+      const foo = {
+        name: "foo",
+        visibility: 1,
+        isStatic: false
+      };
+      expect(isPublicFacing(foo)).toEqual(false);
+    });
+
+    it("returns true when visibility is public", () => {
+      const foo = {
+        name: "foo",
+        visibility: 2,
+        isStatic: false
+      };
+      expect(isPublicFacing(foo)).toEqual(true);
+    });
+
+    it("returns false when isStatic is true", () => {
+      const foo = {
+        name: "foo",
+        visibility: 2,
+        isStatic: true
+      };
+      expect(isPublicFacing(foo)).toEqual(false);
+    });
   });
 
   describe("getProperties", () => {
@@ -111,44 +166,6 @@ describe("Parser", () => {
       ];
 
       expect(getMethods(classDecl).trim()).toEqual("");
-    });
-  });
-
-  describe("isPublicFacing", () => {
-    it("returns false when visibility is private", () => {
-      const foo = {
-        name: "foo",
-        visibility: 1,
-        isStatic: false
-      };
-      expect(isPublicFacing(foo)).toEqual(false);
-    });
-
-    it("returns false when visibility is protected", () => {
-      const foo = {
-        name: "foo",
-        visibility: 1,
-        isStatic: false
-      };
-      expect(isPublicFacing(foo)).toEqual(false);
-    });
-
-    it("returns true when visibility is public", () => {
-      const foo = {
-        name: "foo",
-        visibility: 2,
-        isStatic: false
-      };
-      expect(isPublicFacing(foo)).toEqual(true);
-    });
-
-    it("returns false when isStatic is true", () => {
-      const foo = {
-        name: "foo",
-        visibility: 2,
-        isStatic: true
-      };
-      expect(isPublicFacing(foo)).toEqual(false);
     });
   });
 });
