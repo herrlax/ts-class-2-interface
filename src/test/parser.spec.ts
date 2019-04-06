@@ -4,7 +4,7 @@ import {
   isPublicFacing,
   getProperties,
   getMethods,
-  getInsertLocation
+  getInsertCol
 } from "../parser";
 import {
   PropertyDeclaration,
@@ -26,14 +26,14 @@ describe("Parser", () => {
   describe("getInsertLocation", () => {
     describe("when a signature is missing a white space before {", () => {
       it("return signature length - 1", () => {
-        const insertAt = getInsertLocation("class Foo{");
+        const insertAt = getInsertCol("class Foo{");
         expect(insertAt).toEqual("class Foo{".length - 1);
       });
     });
 
     describe("when a signature is not missing a white space before {", () => {
       it("return signature length - 2", () => {
-        const insertAt = getInsertLocation("class Foo {");
+        const insertAt = getInsertCol("class Foo {");
         expect(insertAt).toEqual("class Foo {".length - 2);
       });
     });

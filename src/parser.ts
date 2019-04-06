@@ -11,7 +11,7 @@ export async function getDeclarations(code: string) {
   return parsedCode.declarations;
 }
 
-export function getInsertLocation(signature: string) {
+export function getInsertCol(signature: string) {
   const stepper = signature.charAt(signature.length - 2) === " " ? 2 : 1;
   return signature.length - stepper;
 }

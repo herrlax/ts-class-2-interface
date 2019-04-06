@@ -4,7 +4,7 @@ import {
   IConstructedInterface,
   createSignatureSuffix
 } from "./constructor";
-import { getDeclarations, getSignature, getInsertLocation } from "./parser";
+import { getDeclarations, getSignature, getInsertCol } from "./parser";
 import { ClassDeclaration } from "typescript-parser";
 
 export async function activate(context: vscode.ExtensionContext) {
@@ -64,13 +64,42 @@ function insertInterface(
   const signature = getSignature(document.getText(selection));
   const signatureSufix = createSignatureSuffix(signature, tsinterface.name);
   const selectedClass = textEditor.selection.start;
-  const insertLocation = getInsertLocation(signature);
-  const location = new vscode.Position(selectedClass.line, insertLocation);
+  const insertCol = getInsertCol(signature);
+  const insertPosition = getInserPosition(
+    selectedClass.line,
+    insertCol,
+    document
+  );
+
+  if (!document.getWordRangeAtPosition(insertPosition)) {
+    error("Found no selected class 💁‍");
+    return;
+  }
 
   textEditor.edit(builder => {
     builder.insert(selectedClass, `${tsinterface.value}\n`);
-    builder.insert(location, signatureSufix);
+    builder.insert(insertPosition, signatureSufix);
   });
+}
+
+function getInserPosition(
+  line: number,
+  characterCol: number,
+  document: vscode.TextDocument
+) {
+  let loc = new vscode.Position(line, characterCol);
+  let stepper = 0;
+
+  while (stepper < 10) {
+    if (document.getWordRangeAtPosition(loc)) {
+      break;
+    }
+
+    stepper++;
+    loc = new vscode.Position(line + stepper, characterCol);
+  }
+
+  return loc;
 }
 
 function error(message: string) {
