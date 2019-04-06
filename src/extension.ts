@@ -107,5 +107,5 @@ function error(message: string) {
 }
 
 export function deactivate() {
-  // TODO
+  return undefined;
 }
