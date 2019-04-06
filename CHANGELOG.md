@@ -1,4 +1,5 @@
 # Change Log
 
-## [Unreleased]
-- This extension is still unreleased
+## 1.0.0
+
+- Initial release
