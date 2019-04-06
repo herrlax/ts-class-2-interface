@@ -2,7 +2,7 @@
   "name": "ts-interface-from-class",
   "displayName": "TS interface from class",
   "description": "Generates interface from selected typescript class",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "engines": {
     "vscode": "^1.31.0"
   },
