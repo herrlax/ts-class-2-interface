@@ -68,5 +68,6 @@
   },
   "icon": "img/icon.png",
   "license": "MIT",
-  "publisher": "MikaelMalmqvist"
+  "publisher": "MikaelMalmqvist",
+  "repository": "https://github.com/herrlax/ts-class-2-interface"
 }
