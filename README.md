@@ -2,6 +2,14 @@
 
 Generates an interface from a selected Typescript class 🏄
 
-## [Unreleased]
+## How to use
 
-- This extension is still unreleased
+Highlight a Typescript class, open command palette and type `TS interface from class`
+
+![dotup-vscode-interface-generator Video](https://raw.githubusercontent.com/herrlax/ts-class-2-interface/develop/img/howto.gif)
+
+## Release notes
+
+### 1.0.0
+
+Initial release
