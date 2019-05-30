@@ -13,3 +13,11 @@ Highlight a Typescript class, open command palette and type `TS interface from c
 ### 1.0.0
 
 Initial release
+
+### 1.0.1
+
+New icon
+
+### 1.0.2
+
+Security improvements
