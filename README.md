@@ -6,7 +6,7 @@ Generates an interface from a selected Typescript class 🏄
 
 Highlight a Typescript class, open command palette and type `TS interface from class`
 
-![dotup-vscode-interface-generator Video](https://raw.githubusercontent.com/herrlax/ts-class-2-interface/develop/img/howto.gif)
+![dotup-vscode-interface-generator Video](https://github.com/herrlax/ts-class-2-interface/blob/master/img/howto.gif?raw=true)
 
 ## Release notes
 
