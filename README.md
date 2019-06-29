@@ -8,6 +8,11 @@ Highlight a Typescript class, open command palette and type `TS interface from c
 
 ![dotup-vscode-interface-generator Video](https://github.com/herrlax/ts-class-2-interface/blob/master/img/howto.gif?raw=true)
 
+## Missing features
+
+- Optional parameters in functions
+- Figuring out the type of a function when not stated (if the return type of a function is not explicitly stated, it will be set to undefined)
+
 ## Release notes
 
 ### 1.0.0
@@ -25,3 +30,7 @@ Security improvements
 ### 1.0.3
 
 Security improvements
+
+### 1.0.4
+
+Update README
