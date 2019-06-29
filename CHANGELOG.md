@@ -11,3 +11,7 @@
 ## 1.0.2
 
 - Bump version of dev dependency due to known security issue
+
+## 1.0.3
+
+- Bump version of dev dependency due to known security issue
