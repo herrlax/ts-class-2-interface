@@ -66,7 +66,7 @@
       "<rootDir>/**/*.spec.ts"
     ]
   },
-  "icon": "https://raw.githubusercontent.com/herrlax/ts-class-2-interface/master/img/icon.png",
+  "icon": "img/icon.png",
   "license": "MIT",
   "publisher": "herrlax",
   "repository": "https://github.com/herrlax/ts-class-2-interface"
